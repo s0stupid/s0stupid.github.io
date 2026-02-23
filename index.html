@@ -72,20 +72,14 @@ function typeLine(text, callback){
     }, 30);
 }
 
-// ===== 시작 함수 =====
+
 function start(){
 
-    typeLine("INITIALIZING SYSTEM...", function(){
-        typeLine("USER DETECTED.", function(){
-            typeLine("IDENTITY VERIFICATION REQUIRED.", function(){
-                typeLine("", function(){
-                    typeLine("QUESTION 1:", function(){
-                        typeLine("ENTER BIRTHDAY (4 DIGITS)", function(){
+    typeLine("집에 돌아온걸 환영해", function(){
+        typeLine("너라면 내 생일정돈 기억해주리라 생각해", function(){
+             typeLine("생일을 입력하세요: (4 글자)", function(){
                             input.style.display = "inline";
                             input.focus();
-                        });
-                    });
-                });
             });
         });
     });
@@ -112,8 +106,8 @@ input.addEventListener("keydown", function(e){
             stage = 1;
 
             typeLine("", function(){
-                typeLine("QUESTION 2:", function(){
-                    typeLine("ENTER NAME");
+                typeLine("그래 이런건 기본이겠지 그럼 마지막으로", function(){
+                    typeLine("너가 부르던 나의 이름을 알려줘");
                 });
             });
 
