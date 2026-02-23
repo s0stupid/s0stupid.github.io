@@ -11,8 +11,22 @@ body{
     background:black;
     overflow:hidden;
     font-family:monospace;
+    cursor:default;
 }
 
+/* 노이즈 레이어 */
+#noise{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    pointer-events:none;
+    opacity:0.04;
+    background:url("https://grainy-gradients.vercel.app/noise.svg");
+}
+
+/* 텍스트 */
 #text{
     position:absolute;
     top:50%;
@@ -23,39 +37,53 @@ body{
     text-align:center;
     width:70%;
     line-height:1.8;
+    opacity:0;
+}
 
+/* 부유 애니메이션 */
+.float{
     animation: float 6s ease-in-out infinite;
 }
 
 @keyframes float{
 
-    0%{
-        transform:translate(-50%, -50%) translateY(0px);
-        opacity:0.8;
-    }
-
-    50%{
-        transform:translate(-50%, -50%) translateY(-20px);
-        opacity:1;
-    }
-
-    100%{
-        transform:translate(-50%, -50%) translateY(0px);
-        opacity:0.8;
-    }
+    0%{ transform:translate(-50%, -50%) translateY(0px);}
+    50%{ transform:translate(-50%, -50%) translateY(-20px);}
+    100%{ transform:translate(-50%, -50%) translateY(0px);}
 
 }
 
-.fadeIn{
-    animation: fadeIn 3s ease forwards;
+/* 깜빡임 */
+.flicker{
+    animation: flicker 8s infinite;
 }
 
-@keyframes fadeIn{
+@keyframes flicker{
+
+    0%{opacity:1;}
+    97%{opacity:1;}
+    98%{opacity:0.7;}
+    99%{opacity:1;}
+    100%{opacity:0.8;}
+
+}
+
+/* 입자 */
+.particle{
+    position:absolute;
+    width:2px;
+    height:2px;
+    background:white;
+    opacity:0.3;
+    animation: particleFloat linear infinite;
+}
+
+@keyframes particleFloat{
     from{
-        opacity:0;
+        transform:translateY(100vh);
     }
     to{
-        opacity:1;
+        transform:translateY(-10vh);
     }
 }
 
@@ -63,23 +91,9 @@ body{
 </head>
 <body>
 
-<div id="text" class="fadeIn">
+<div id="noise"></div>
 
-그래, 네가 이곳에 오기까지 정말 짧은 시간이 걸렸나 보네.<br><br>
-
-이렇게까지 파헤쳐서 결국 네가 얻은 건 부서진 마음뿐이거든.<br><br>
-
-곧 이곳은 새단장을 할 거야.<br>
-가끔 집도 청소를 하듯, 이 공간도 새로운 모습이 되어야 하니까.<br><br>
-
-아, 그리고…<br><br>
-
-네가 이걸 발견했다면,<br>
-나에게 DM이라도 하나 보내줘.<br><br>
-
-널 위한 작은 선물이 준비되어 있으니까.
-
-</div>
+<div id="text" class="float flicker"></div>
 
 <audio id="music" autoplay loop>
 <source src="music.mp3" type="audio/mpeg">
@@ -87,12 +101,115 @@ body{
 
 <script>
 
-
+// ===== 음악 =====
 const music = document.getElementById("music");
 
 document.addEventListener("click", function(){
     music.play();
 });
+
+// ===== 텍스트 =====
+
+const message = [
+
+"그래, 네가 이곳에 오기까지 정말 짧은 시간이 걸렸나 보네.",
+
+"",
+
+"이렇게까지 파헤쳐서 결국 네가 얻은 건 부서진 마음뿐이거든.",
+
+"",
+
+"곧 이곳은 새단장을 할 거야.",
+
+"가끔 집도 청소를 하듯, 이 공간도 새로운 모습이 되어야 하니까.",
+
+"",
+
+"아, 그리고…",
+
+"",
+
+"네가 이걸 발견했다면,",
+
+"나에게 DM이라도 하나 보내줘.",
+
+"",
+
+"널 위한 작은 선물이 준비되어 있으니까."
+
+];
+
+const textElement = document.getElementById("text");
+
+let lineIndex = 0;
+
+function showNextLine(){
+
+    if(lineIndex >= message.length) return;
+
+    const line = document.createElement("div");
+
+    line.style.opacity = "0";
+
+    line.innerText = message[lineIndex];
+
+    textElement.appendChild(line);
+
+    setTimeout(()=>{
+        line.style.transition = "opacity 2s";
+        line.style.opacity = "1";
+    },100);
+
+    lineIndex++;
+
+    setTimeout(showNextLine, 2000);
+
+}
+
+// 시작
+setTimeout(()=>{
+    textElement.style.opacity = "1";
+    showNextLine();
+},1000);
+
+
+// ===== 마우스 따라 움직임 =====
+
+document.addEventListener("mousemove", function(e){
+
+    const x = (e.clientX / window.innerWidth - 0.5) * 10;
+    const y = (e.clientY / window.innerHeight - 0.5) * 10;
+
+    textElement.style.transform =
+        "translate(calc(-50% + "+x+"px), calc(-50% + "+y+"px))";
+
+});
+
+
+// ===== 입자 생성 =====
+
+function createParticle(){
+
+    const particle = document.createElement("div");
+
+    particle.className = "particle";
+
+    particle.style.left = Math.random() * 100 + "vw";
+
+    particle.style.animationDuration =
+        (5 + Math.random() * 10) + "s";
+
+    document.body.appendChild(particle);
+
+    setTimeout(()=>{
+        particle.remove();
+    },15000);
+
+}
+
+setInterval(createParticle, 300);
+
 
 </script>
 
