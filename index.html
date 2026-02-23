@@ -48,7 +48,7 @@ const validNames = [
 "신",
 "stupid",
 "멍청이"
-];
+]; --이런걸 봐서 알정도면 굳이 들어가야 하는걸까?
 
 const output = document.getElementById("output");
 const input = document.getElementById("answer");
@@ -105,7 +105,7 @@ input.addEventListener("keydown", function(e){
 
             stage = 1;
 
-            typeLine("", function(){
+            typeLine(" ", function(){
                 typeLine("그래 이런건 기본이겠지 그럼 마지막으로", function(){
                     typeLine("너가 부르던 나의 이름을 알려줘");
                 });
@@ -126,7 +126,7 @@ input.addEventListener("keydown", function(e){
             error.innerHTML = "";
             output.innerHTML += "> " + value + "<br>";
 
-            typeLine("", function(){
+            typeLine(" ", function(){
                 typeLine("ACCESS GRANTED", function(){
                     setTimeout(function(){
                         window.location.href = "main.html";
