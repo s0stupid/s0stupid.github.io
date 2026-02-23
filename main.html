@@ -14,7 +14,6 @@ body{
     cursor:default;
 }
 
-/* 노이즈 레이어 */
 #noise{
     position:fixed;
     top:0;
@@ -26,7 +25,7 @@ body{
     background:url("https://grainy-gradients.vercel.app/noise.svg");
 }
 
-/* 텍스트 */
+
 #text{
     position:absolute;
     top:50%;
@@ -40,7 +39,7 @@ body{
     opacity:0;
 }
 
-/* 부유 애니메이션 */
+
 .float{
     animation: float 6s ease-in-out infinite;
 }
@@ -53,7 +52,6 @@ body{
 
 }
 
-/* 깜빡임 */
 .flicker{
     animation: flicker 8s infinite;
 }
@@ -68,7 +66,7 @@ body{
 
 }
 
-/* 입자 */
+
 .particle{
     position:absolute;
     width:2px;
@@ -101,14 +99,14 @@ body{
 
 <script>
 
-// ===== 음악 =====
+
 const music = document.getElementById("music");
 
 document.addEventListener("click", function(){
     music.play();
 });
 
-// ===== 텍스트 =====
+
 
 const message = [
 
@@ -145,14 +143,13 @@ function showNextLine(){
 
 }
 
-// 시작
+
 setTimeout(()=>{
     textElement.style.opacity = "1";
     showNextLine();
 },1000);
 
 
-// ===== 마우스 따라 움직임 =====
 
 document.addEventListener("mousemove", function(e){
 
@@ -165,7 +162,6 @@ document.addEventListener("mousemove", function(e){
 });
 
 
-// ===== 입자 생성 =====
 
 function createParticle(){
 
