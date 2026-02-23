@@ -115,16 +115,13 @@ body{
 
 <script>
 
-// ===== 설정 =====
 const password = "0221";
 
-// ===== 요소 =====
 const text = document.getElementById("text");
 const answer = document.getElementById("answer");
 const error = document.getElementById("error");
 const output = document.getElementById("output");
 
-// ===== 타이핑 =====
 function typeLine(content, delay=30){
     return new Promise(resolve=>{
         const line = document.createElement("div");
@@ -142,7 +139,6 @@ function typeLine(content, delay=30){
     });
 }
 
-// ===== 글리치 =====
 function glitch(){
     output.classList.add("glitch");
     setTimeout(()=>{
@@ -150,7 +146,6 @@ function glitch(){
     },200);
 }
 
-// ===== 시작 =====
 async function start(){
     await typeLine("SYSTEM ONLINE...");
     await typeLine("LOCKED ARCHIVE DETECTED.");
@@ -191,7 +186,6 @@ answer.addEventListener("keydown", async function(e){
 
 });
 
-// ===== 입자 =====
 function createParticle(){
     const p=document.createElement("div");
     p.className="particle";
