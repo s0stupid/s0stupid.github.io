@@ -1,116 +1,182 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>ACCESS GATE</title>
+
+<style>
+body{
+    background:black;
+    color:white;
+    font-family:monospace;
+    font-size:18px;
+    padding:40px;
+}
+
+#output{
+    white-space:pre-line;
+    margin-bottom:20px;
+}
+
+#answer{
+    background:black;
+    color:white;
+    border:1px solid white;
+    padding:5px;
+    font-family:monospace;
+    display:none;
+}
+
+#error{
+    color:red;
+    margin-top:10px;
+}
+</style>
+
+</head>
+<body>
+
+<div id="output"></div>
+
+<input id="answer" type="text" autocomplete="off">
+
+<div id="error"></div>
+
 <script>
 
-const introLines = [
-"INITIALIZING SYSTEM...",
-"USER DETECTED.",
-"IDENTITY VERIFICATION REQUIRED.",
-"",
-"QUESTION 1:",
-"ENTER BIRTHDAY (4 DIGITS)"
-];
 
-// 🔧 생일
 const birthday = "0221";
 
-// 🔧 허용할 이름들 여러 개 추가 가능
 const validNames = [
-"stupid",
-"sin",
 "shin",
+"sin",
+"stupid",
 "r233222"
 ];
 
-let questionIndex = 0;
 
 const output = document.getElementById("output");
 const input = document.getElementById("answer");
 const error = document.getElementById("error");
 
-function typeLine(text, callback){
-    let i = 0;
-    const interval = setInterval(()=>{
-        output.innerHTML += text[i];
-        i++;
-        if(i >= text.length){
-            clearInterval(interval);
-            output.innerHTML += "\n";
-            if(callback) callback();
-        }
-    }, 30);
+if(!input){
+    console.error("input element not found");
 }
 
-function typeIntro(){
+function typeLine(text, callback){
     let i = 0;
-    function next(){
-        if(i < introLines.length){
-            typeLine(introLines[i], ()=>{
-                i++;
-                next();
-            });
-        }else{
-            input.style.display = "inline";
-            input.focus();
+
+    const interval = setInterval(()=>{
+
+        output.innerHTML += text[i];
+
+        i++;
+
+        if(i >= text.length){
+
+            clearInterval(interval);
+
+            output.innerHTML += "<br>";
+
+            if(callback) callback();
+
         }
-    }
-    next();
+
+    }, 30);
+
 }
+
+function start(){
+
+    typeLine("INITIALIZING SYSTEM...", ()=>{
+    typeLine("USER DETECTED.", ()=>{
+    typeLine("IDENTITY VERIFICATION REQUIRED.", ()=>{
+    typeLine("", ()=>{
+    typeLine("QUESTION 1:", ()=>{
+    typeLine("ENTER BIRTHDAY (4 DIGITS)", ()=>{
+
+        input.style.display = "inline";
+        input.focus();
+
+    });
+    });
+    });
+    });
+    });
+
+}
+
+let stage = 0;
 
 input.addEventListener("keydown", function(e){
 
-    if(e.key === "Enter"){
+    if(e.key !== "Enter") return;
 
-        const value = input.value.trim();
+    const value = input.value.trim();
 
-        if(questionIndex === 0){
+    if(stage === 0){
 
-            if(value === birthday){
+        if(value === birthday){
 
-                error.innerHTML = "";
-                output.innerHTML += "> " + value + "\n";
+            error.innerHTML = "";
 
-                questionIndex++;
+            output.innerHTML += "> " + value + "<br>";
 
-                typeLine("");
-                typeLine("QUESTION 2:");
-                typeLine("ENTER NAME");
+            stage = 1;
 
-            }else{
+            typeLine("", ()=>{
+            typeLine("QUESTION 2:", ()=>{
+            typeLine("ENTER NAME");
+            });
+            });
 
-                error.innerHTML = "ACCESS DENIED";
+        }
+        else{
 
-            }
-
-        }else if(questionIndex === 1){
-
-            // 🔧 이름 배열에서 검사 (대소문자 무시)
-            const lowerNames = validNames.map(n => n.toLowerCase());
-
-            if(lowerNames.includes(value.toLowerCase())){
-
-                error.innerHTML = "";
-                output.innerHTML += "> " + value + "\n";
-
-                typeLine("");
-                typeLine("ACCESS GRANTED", ()=>{
-                    setTimeout(()=>{
-                        window.location.href = "main.html";
-                    }, 1000);
-                });
-
-            }else{
-
-                error.innerHTML = "ACCESS DENIED";
-
-            }
+            error.innerHTML = "ACCESS DENIED";
 
         }
 
-        input.value = "";
+    }
+    else if(stage === 1){
+
+        const lowerNames = validNames.map(n => n.toLowerCase());
+
+        if(lowerNames.includes(value.toLowerCase())){
+
+            error.innerHTML = "";
+
+            output.innerHTML += "> " + value + "<br>";
+
+            typeLine("", ()=>{
+            typeLine("ACCESS GRANTED", ()=>{
+
+                setTimeout(()=>{
+
+                    window.location.href = "main.html";
+
+                }, 1000);
+
+            });
+            });
+
+        }
+        else{
+
+            error.innerHTML = "ACCESS DENIED";
+
+        }
 
     }
 
+    input.value = "";
+
 });
 
-typeIntro();
+
+start();
 
 </script>
+
+</body>
+</html>
