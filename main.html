@@ -1,12 +1,100 @@
 <!DOCTYPE html>
-<html>
+<html lang="ko">
 <head>
-<title>MAIN</title>
-</head>
-<body style="background:black;color:white;font-family:monospace;text-align:center;margin-top:20%;">
+<meta charset="UTF-8">
+<title>HOME</title>
 
-<h1>WELCOME</h1>
-<p>You have accessed the main system.</p>
+<style>
+
+body{
+    margin:0;
+    background:black;
+    overflow:hidden;
+    font-family:monospace;
+}
+
+#text{
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%, -50%);
+    color:white;
+    font-size:20px;
+    text-align:center;
+    width:70%;
+    line-height:1.8;
+
+    animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float{
+
+    0%{
+        transform:translate(-50%, -50%) translateY(0px);
+        opacity:0.8;
+    }
+
+    50%{
+        transform:translate(-50%, -50%) translateY(-20px);
+        opacity:1;
+    }
+
+    100%{
+        transform:translate(-50%, -50%) translateY(0px);
+        opacity:0.8;
+    }
+
+}
+
+.fadeIn{
+    animation: fadeIn 3s ease forwards;
+}
+
+@keyframes fadeIn{
+    from{
+        opacity:0;
+    }
+    to{
+        opacity:1;
+    }
+}
+
+</style>
+</head>
+<body>
+
+<div id="text" class="fadeIn">
+
+그래, 네가 이곳에 오기까지 정말 짧은 시간이 걸렸나 보네.<br><br>
+
+이렇게까지 파헤쳐서 결국 네가 얻은 건 부서진 마음뿐이거든.<br><br>
+
+곧 이곳은 새단장을 할 거야.<br>
+가끔 집도 청소를 하듯, 이 공간도 새로운 모습이 되어야 하니까.<br><br>
+
+아, 그리고…<br><br>
+
+네가 이걸 발견했다면,<br>
+나에게 DM이라도 하나 보내줘.<br><br>
+
+널 위한 작은 선물이 준비되어 있으니까.
+
+</div>
+
+<audio id="music" autoplay loop>
+<source src="music.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+
+
+const music = document.getElementById("music");
+
+document.addEventListener("click", function(){
+    music.play();
+});
+
+</script>
 
 </body>
 </html>
