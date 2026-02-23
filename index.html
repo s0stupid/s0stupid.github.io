@@ -1,22 +1,155 @@
 <!DOCTYPE html>
-<html>
+<html lang="ko">
 <head>
-    <title>ACCESS</title>
+<meta charset="UTF-8">
+<title>ACCESS GATE</title>
+
+<style>
+body{
+    background:black;
+    color:white;
+    font-family:monospace;
+    font-size:18px;
+    padding:40px;
+}
+
+#output{
+    white-space:pre-line;
+    margin-bottom:20px;
+}
+
+input{
+    background:black;
+    color:white;
+    border:1px solid white;
+    padding:5px;
+    font-family:monospace;
+}
+
+#error{
+    color:red;
+    margin-top:10px;
+}
+</style>
+
 </head>
-<body style="background:black;color:white;text-align:center;margin-top:20%;font-family:monospace;">
+<body>
 
-<h1>ACCESS LOG</h1>
+<div id="output"></div>
 
-<p>> CLICK ANYWHERE</p>
-
-<p id="secret" style="display:none;color:red;">
-LOG ENTRY FOUND
-</p>
+<input id="answer" type="text" autocomplete="off" style="display:none;">
+<div id="error"></div>
 
 <script>
-document.addEventListener("click", function(){
-    document.getElementById("secret").style.display = "block";
+
+const introLines = [
+"INITIALIZING SYSTEM...",
+"USER DETECTED.",
+"IDENTITY VERIFICATION REQUIRED.",
+"",
+"QUESTION 1:",
+"ENTER BIRTHDAY (4 DIGITS)"
+];
+
+const questions = [
+"ENTER BIRTHDAY (4 DIGITS)",
+"ENTER NAME"
+];
+
+// 🔧 여기 수정
+const birthday = "0221"; // ← 네 생일 4자리
+const nameAnswer = "shin","stupid"; // ← 네 이름
+
+let questionIndex = 0;
+
+const output = document.getElementById("output");
+const input = document.getElementById("answer");
+const error = document.getElementById("error");
+
+function typeLine(text, callback){
+    let i = 0;
+    const interval = setInterval(()=>{
+        output.innerHTML += text[i];
+        i++;
+        if(i >= text.length){
+            clearInterval(interval);
+            output.innerHTML += "\n";
+            if(callback) callback();
+        }
+    }, 30);
+}
+
+function typeIntro(){
+    let i = 0;
+    function next(){
+        if(i < introLines.length){
+            typeLine(introLines[i], ()=>{
+                i++;
+                next();
+            });
+        }else{
+            input.style.display = "inline";
+            input.focus();
+        }
+    }
+    next();
+}
+
+input.addEventListener("keydown", function(e){
+
+    if(e.key === "Enter"){
+
+        const value = input.value.trim();
+
+        if(questionIndex === 0){
+
+            if(value === birthday){
+
+                error.innerHTML = "";
+                output.innerHTML += "> " + value + "\n";
+
+                questionIndex++;
+
+                typeLine("");
+                typeLine("QUESTION 2:");
+                typeLine("ENTER NAME");
+
+            }else{
+
+                error.innerHTML = "ACCESS DENIED";
+
+            }
+
+        }else if(questionIndex === 1){
+
+            if(value.toLowerCase() === nameAnswer.toLowerCase()){
+
+                error.innerHTML = "";
+                output.innerHTML += "> " + value + "\n";
+
+                typeLine("");
+                typeLine("ACCESS GRANTED", ()=>{
+                    setTimeout(()=>{
+                        window.location.href = "main.html";
+                    }, 1000);
+                });
+
+            }else{
+
+                error.innerHTML = "ACCESS DENIED";
+
+            }
+
+        }
+
+        input.value = "";
+
+    }
+
 });
+
+typeIntro();
+
 </script>
 
 </body>
