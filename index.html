@@ -12,12 +12,10 @@ body{
     font-size:18px;
     padding:40px;
 }
-
 #output{
     white-space:pre-line;
     margin-bottom:20px;
 }
-
 #answer{
     background:black;
     color:white;
@@ -26,82 +24,70 @@ body{
     font-family:monospace;
     display:none;
 }
-
 #error{
     color:red;
     margin-top:10px;
 }
 </style>
-
 </head>
+
 <body>
 
 <div id="output"></div>
-
 <input id="answer" type="text" autocomplete="off">
-
 <div id="error"></div>
 
 <script>
 
-
 const birthday = "0221";
 
 const validNames = [
+"r233222",
 "shin",
 "sin",
+"신",
 "stupid",
-"r233222"
+"멍청이"
 ];
-
 
 const output = document.getElementById("output");
 const input = document.getElementById("answer");
 const error = document.getElementById("error");
 
-if(!input){
-    console.error("input element not found");
-}
-
 function typeLine(text, callback){
     let i = 0;
-
-    const interval = setInterval(()=>{
+    const interval = setInterval(function(){
 
         output.innerHTML += text[i];
-
         i++;
 
         if(i >= text.length){
-
             clearInterval(interval);
-
             output.innerHTML += "<br>";
-
-            if(callback) callback();
-
+            if(callback){
+                callback();
+            }
         }
 
     }, 30);
-
 }
 
+// ===== 시작 함수 =====
 function start(){
 
-    typeLine("INITIALIZING SYSTEM...", ()=>{
-    typeLine("USER DETECTED.", ()=>{
-    typeLine("IDENTITY VERIFICATION REQUIRED.", ()=>{
-    typeLine("", ()=>{
-    typeLine("QUESTION 1:", ()=>{
-    typeLine("ENTER BIRTHDAY (4 DIGITS)", ()=>{
-
-        input.style.display = "inline";
-        input.focus();
-
-    });
-    });
-    });
-    });
+    typeLine("INITIALIZING SYSTEM...", function(){
+        typeLine("USER DETECTED.", function(){
+            typeLine("IDENTITY VERIFICATION REQUIRED.", function(){
+                typeLine("", function(){
+                    typeLine("QUESTION 1:", function(){
+                        typeLine("ENTER BIRTHDAY (4 DIGITS)", function(){
+                            input.style.display = "inline";
+                            input.focus();
+                        });
+                    });
+                });
+            });
+        });
     });
 
 }
@@ -110,7 +96,9 @@ let stage = 0;
 
 input.addEventListener("keydown", function(e){
 
-    if(e.key !== "Enter") return;
+    if(e.key !== "Enter"){
+        return;
+    }
 
     const value = input.value.trim();
 
@@ -119,52 +107,41 @@ input.addEventListener("keydown", function(e){
         if(value === birthday){
 
             error.innerHTML = "";
-
             output.innerHTML += "> " + value + "<br>";
 
             stage = 1;
 
-            typeLine("", ()=>{
-            typeLine("QUESTION 2:", ()=>{
-            typeLine("ENTER NAME");
-            });
+            typeLine("", function(){
+                typeLine("QUESTION 2:", function(){
+                    typeLine("ENTER NAME");
+                });
             });
 
-        }
-        else{
-
+        }else{
             error.innerHTML = "ACCESS DENIED";
-
         }
 
-    }
-    else if(stage === 1){
+    }else if(stage === 1){
 
-        const lowerNames = validNames.map(n => n.toLowerCase());
+        const lowerNames = validNames.map(function(n){
+            return n.toLowerCase();
+        });
 
         if(lowerNames.includes(value.toLowerCase())){
 
             error.innerHTML = "";
-
             output.innerHTML += "> " + value + "<br>";
 
-            typeLine("", ()=>{
-            typeLine("ACCESS GRANTED", ()=>{
-
-                setTimeout(()=>{
-
-                    window.location.href = "main.html";
-
-                }, 1000);
-
-            });
+            typeLine("", function(){
+                typeLine("ACCESS GRANTED", function(){
+                    setTimeout(function(){
+                        window.location.href = "main.html";
+                    }, 1000);
+                });
             });
 
-        }
-        else{
-
+        }else{
             error.innerHTML = "ACCESS DENIED";
-
         }
 
     }
